@@ -15,8 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest
  *
  * AspectJ와 스프링 AOP의 가장 큰 차이점은 위빙(weaving) 시점입니다.
  * 위빙이란 애플리케이션 코드의 적절한 위치에 애스펙트(Advisor)를 적용하는 과정을 말합니다.
- * 스프링 AOP는 프록시 메커니즘을 사용해 런타임 시점에 위빙을 수행합니다.
- * 반면 AspectJ는 컴파일 시점(CTW)이나 로딩 시점(Load-Time Weaving, LTW)에 위빙을 수행합니다.
+ * 스프링 AOP는 프록시 메커니즘을 사용해 런타임 시점에 위빙을 수행합니다.  -> 동적 프록시
+ * 반면 AspectJ는 컴파일 시점(CTW)이나 로딩 시점(Load-Time Weaving, LTW)에 위빙을 수행합니다.  -> 정적 프록시
  * AspectJ는 자바만으로 잘 해결되지 않는 횡단 관심사(crosscutting concerns)를 해결하기 위해 사용됩니다.
  *
  * 스프링 AOP와 AspectJ의 지원하는 Joinpoint의 차이점은 다음과 같습니다.
@@ -40,7 +40,7 @@ class AspectJ(
 ) : FreeSpec({
 
     """
-    @AspectJ를 사용하여 AspectJ AOP를 적용합니다.
+    @Aspect를 사용하여 AspectJ AOP를 적용합니다.
     AnnotatedAdvice 클래스에 @Aspect를 사용하여 AspectJ AOP를 적용합니다.
     @Component를 붙여야 스프링 빈으로 등록됩니다.
     AopConfig 클래스에 @EnableAspectJAutoProxy를 사용하여 AspectJ AOP를 활성화합니다.

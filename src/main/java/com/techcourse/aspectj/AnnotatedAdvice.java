@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Component
-@Aspect
+@Aspect  // AspectJ AOP 적용
 public class AnnotatedAdvice {
 
     // SpringAOP 테스트의 AspectJ 포인트컷 표현식
