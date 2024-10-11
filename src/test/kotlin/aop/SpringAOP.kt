@@ -74,8 +74,8 @@ class SpringAOP : FreeSpec({
 
             val proxy = proxyFactory.proxy as World
 
-            target.message shouldBe ""
-            proxy.message shouldBe ""
+            target.message shouldBe "World"
+            proxy.message shouldBe "Hello, World!"
         }
 
         """
@@ -100,7 +100,7 @@ class SpringAOP : FreeSpec({
 
                 // proxy.message를 호출하면 HelloBeforeAdvice의 before 메서드가 실행됩니다.
                 // 콘솔창 메시지를 확인하세요.
-                proxy.message shouldBe ""
+                proxy.message shouldBe "World"
             }
 
             """
@@ -114,9 +114,9 @@ class SpringAOP : FreeSpec({
 
                 val proxy = proxyFactory.proxy as World
 
-                // proxy.message를 호출하면 HelloAfterReturningAdvice의 before 메서드가 실행됩니다.
+                // proxy.message를 호출하면 HelloAfterReturningAdvice의 afterReturning 메서드가 실행됩니다.
                 // 콘솔창 메시지를 확인하세요.
-                proxy.message shouldBe ""
+                proxy.message shouldBe "World"
             }
 
             """
@@ -137,13 +137,13 @@ class SpringAOP : FreeSpec({
                     // 콘솔창 메시지를 확인하세요.
                     proxy.exception()
                 }
-                exception.message shouldBe ""
+                exception.message shouldBe "Generic Exception"
 
                 val illegalArgumentException = shouldThrow<IllegalArgumentException> {
                     // 콘솔창 메시지를 확인하세요.
                     proxy.illegalArgumentException()
                 }
-                illegalArgumentException.message shouldBe ""
+                illegalArgumentException.message shouldBe "IllegalArgument Exception"
             }
         }
 
@@ -165,14 +165,14 @@ class SpringAOP : FreeSpec({
                 val methodPointcut = NameMatchMethodPointcut()
                 methodPointcut.addMethodName("getMessage")
                 val advice = SimpleAdvice()
-                val advisor = DefaultPointcutAdvisor(methodPointcut, advice)
+                val advisor = DefaultPointcutAdvisor(methodPointcut, advice)  // advisor = pointcut + advice
 
                 val proxyFactory = ProxyFactory()
-                proxyFactory.addAdvisor(advisor)
+                proxyFactory.addAdvisor(advisor)  // addAdvice() 가 아닌 addAdvisor()를 사용
                 proxyFactory.setTarget(target)
                 val proxy = proxyFactory.proxy as World
 
-                proxy.message shouldBe ""
+                proxy.message shouldBe "Hello, World!"
             }
 
             """
@@ -190,7 +190,7 @@ class SpringAOP : FreeSpec({
                 proxyFactory.setTarget(target)
                 val proxy = proxyFactory.proxy as World
 
-                proxy.message shouldBe ""
+                proxy.message shouldBe "Hello, World!"
             }
 
             """
@@ -201,7 +201,7 @@ class SpringAOP : FreeSpec({
             보통은 정적 포인트컷을 사용하는 것이 성능상 유리하지만 동적으로 어드바이스를 결정할 필요가 있을때 사용합시다.
             """ {
                 val sampleBean = SampleBean()
-                val pointcut = SimpleDynamicPointcut()
+                val pointcut = SimpleDynamicPointcut()  // 메서드 이름이 "dynamicPointcut"인지 확인 -> 인수가 100이 아닌지 확인
                 val advice = SimpleAdvice()
                 val advisor = DefaultPointcutAdvisor(pointcut, advice)
 
@@ -210,8 +210,8 @@ class SpringAOP : FreeSpec({
                 proxyFactory.setTarget(sampleBean)
                 val proxy = proxyFactory.proxy as SampleBean
 
-                proxy.dynamicPointcut(1) shouldBe ""
-                proxy.dynamicPointcut(100) shouldBe ""
+                proxy.dynamicPointcut(1) shouldBe "Hello, Invoked dynamicPointcut(1)!"
+                proxy.dynamicPointcut(100) shouldBe "Invoked dynamicPointcut(100)"  // 인수가 100이므로 advice가 적용되지 않음
             }
 
             """
@@ -220,7 +220,7 @@ class SpringAOP : FreeSpec({
             AspectJ를 사용하려면 build.gradle에 aspectjweaver, aspectjrt 의존성을 추가해야 합니다.
             """ {
                 val pointcut = AspectJExpressionPointcut()
-                pointcut.expression = "execution(* getMessage*(..))"
+                pointcut.expression = "execution(* getMessage*(..))"  // PointCut 표현식. getMessage로 시작하는 메서드를 대상으로 함
                 val advice = SimpleAdvice()
                 val advisor = DefaultPointcutAdvisor(pointcut, advice)
 
@@ -229,7 +229,7 @@ class SpringAOP : FreeSpec({
                 proxyFactory.setTarget(target)
                 val proxy = proxyFactory.proxy as World
 
-                proxy.message shouldBe ""
+                proxy.message shouldBe "Hello, World!"
             }
 
             """
@@ -246,7 +246,7 @@ class SpringAOP : FreeSpec({
                 proxyFactory.setTarget(sampleBean)
                 val proxy = proxyFactory.proxy as SampleBean
 
-                proxy.annotationPointcut() shouldBe ""
+                proxy.annotationPointcut() shouldBe "Hello, Invoked annotationPointcut()!"
             }
         }
     }
