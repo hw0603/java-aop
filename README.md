@@ -34,8 +34,8 @@ AOP에서 중요한 개념은 🌟로 표시했습니다.
 
 ## 학습 테스트에서 cglib 사용시 주의사항
 
-cligb를 구현할 때 스샷을 참고해서 아래 VM 옵션을 활성화한다.
-
+cligb를 구현할 때 스샷을 참고해서 아래 VM 옵션을 활성화한다.  
+ref: https://www.baeldung.com/java-modularity#9-opens
 ```
 --add-opens java.base/java.lang=ALL-UNNAMED
 --add-opens java.base/java.lang.reflect=ALL-UNNAMED

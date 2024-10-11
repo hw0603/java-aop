@@ -58,7 +58,7 @@ class Concepts : FreeSpec({
             """ {
                 // SecureBean 인터페이스를 구현한 프록시 객체를 생성
                 val jdkDynamicAopProxy = JdkDynamicAopProxy()
-                jdkDynamicAopProxy.setInterfaces(SecureBean::class.java);
+                jdkDynamicAopProxy.setInterfaces(SecureBean::class.java)
                 jdkDynamicAopProxy.addAdvice(
                     SecurityInvocationHandler(
                         SecureBeanTarget()
@@ -74,7 +74,7 @@ class Concepts : FreeSpec({
 
                 // 인증되지 않은 사용자
                 shouldThrow<IllegalStateException> {
-                    secureBean.writeSecureMessage()
+                    secureBean.writeSecureMessage()  // 프록시로 만들어진 secureBean.writeSecureMessage() 메서드를 호출하면 SecurityInvocationHandler의 invoke() 메서드가 호출됨
                 }
 
                 // invalid user 사용자
